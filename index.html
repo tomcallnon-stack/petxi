@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
-      --primary-blue: #2563eb;
+      --primary-pink: #e91e63;
       --card-bg: #fff;
       --card-shadow: 0 2px 8px rgba(0,0,0,0.07), 0 1.5px 3px rgba(0,0,0,0.03);
       --border-radius: 12px;
@@ -38,7 +38,7 @@
     header h1 {
       font-size: 2rem;
       margin: 0;
-      color: var(--pink);
+      color: var(--primary-pink);
       letter-spacing: -0.5px;
     }
     #jobs-container {
@@ -61,20 +61,26 @@
     }
     .job-card:hover {
       transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 4px 16px rgba(37,99,235,0.09);
+      box-shadow: 0 4px 16px rgba(233,30,99,0.09);
     }
     .job-title {
       font-size: 1.14rem;
       font-weight: 600;
       margin: 0;
-      color: var(--primary-blue);
+      color: var(--primary-pink);
       text-decoration: none;
       word-break: break-word;
       transition: color 0.1s;
     }
     .job-title:hover, .job-title:focus {
-      color: #1749b3;
+      color: #b0003a;
       text-decoration: underline;
+    }
+    .job-desc {
+      margin: 0.3em 0 0.4em 0;
+      color: #555;
+      font-size: 1rem;
+      line-height: 1.5;
     }
     .job-meta {
       display: flex;
@@ -91,7 +97,7 @@
     }
     .salary {
       font-weight: 500;
-      color: #2563eb;
+      color: var(--primary-pink);
     }
     @media (max-width: 700px) {
       header, #jobs-container {
@@ -110,6 +116,9 @@
       }
       .job-meta {
         font-size: 0.92rem;
+      }
+      .job-desc {
+        font-size: 0.94rem;
       }
     }
     .loading, .error {
@@ -139,7 +148,7 @@
     </div>
   </main>
   <footer>
-    Powered by <a href="https://www.adzuna.co.uk/" target="_blank" rel="noopener" style="color:#2563eb;">Adzuna Jobs API</a>
+    Powered by <a href="https://www.adzuna.co.uk/" target="_blank" rel="noopener" style="color:#e91e63;">Adzuna Jobs API</a>
   </footer>
   <script>
     // --- Configuration (replace YOUR_APP_ID and YOUR_APP_KEY with your Adzuna credentials) ---
@@ -175,6 +184,16 @@
       return String(text).replace(/[&<>"']/g, m => map[m]);
     }
 
+    function firstTwoSentences(text) {
+      if (!text) return '';
+      // Remove HTML tags
+      text = text.replace(/<\/?[^>]+(>|$)/g, "");
+      // Split into sentences
+      const sentences = text.match(/[^.!?]+[.!?]+/g);
+      if (!sentences) return escapeHtml(text).substring(0, 140) + '...';
+      return escapeHtml(sentences.slice(0, 2).join(' ').trim());
+    }
+
     function renderJobs(jobs) {
       jobsContainer.innerHTML = '';
       if (!jobs || jobs.length === 0) {
@@ -191,15 +210,17 @@
           .replace("USD", "$")
           .replace("EUR", "€");
         const salary = formatSalary(job.salary_min, job.salary_max, currency);
+        const description = firstTwoSentences(job.description);
 
         const card = document.createElement('div');
         card.className = 'job-card';
         card.innerHTML = `
           <a href="${link}" class="job-title" target="_blank" rel="noopener">${title}</a>
+          <div class="job-desc">${description}</div>
           <div class="job-meta">
-            <span title="Company"><svg width="16" height="16" style="margin-right:2px;vertical-align:middle;" fill="#2563eb" viewBox="0 0 20 20"><path d="M8.5 6a1.5 1.5 0 013 0v1h1.25A2.25 2.25 0 0115 9.25v6A2.25 2.25 0 0112.75 17h-5.5A2.25 2.25 0 015 15.25v-6A2.25 2.25 0 017.25 7H8.5V6zM7.25 8.5a.75.75 0 00-.75.75v6a.75.75 0 00.75.75h5.5a.75.75 0 00.75-.75v-6a.75.75 0 00-.75-.75h-5.5z"/></svg> ${company}</span>
-            <span title="Location"><svg width="16" height="16" style="margin-right:2px;vertical-align:middle;" fill="#2563eb" viewBox="0 0 20 20"><path d="M10 2a6 6 0 016 6c0 4.418-6 10-6 10S4 12.418 4 8a6 6 0 016-6zm0 2a4 4 0 00-4 4c0 2.485 2.5 6.086 4 7.973C11.5 12.086 14 8.485 14 6a4 4 0 00-4-4zm0 2a2 2 0 110 4 2 2 0 010-4z"/></svg> ${location}</span>
-            <span class="salary" title="Salary"><svg width="16" height="16" style="margin-right:2px;vertical-align:middle;" fill="#2563eb" viewBox="0 0 20 20"><path d="M10 15a1 1 0 100-2 1 1 0 000 2zm-4-2a4 4 0 018 0H4zm4-8a4 4 0 00-4 4v1a1 1 0 001 1h6a1 1 0 001-1v-1a4 4 0 00-4-4z"/></svg> ${escapeHtml(salary)}</span>
+            <span title="Company"><svg width="16" height="16" style="margin-right:2px;vertical-align:middle;" fill="#e91e63" viewBox="0 0 20 20"><path d="M8.5 6a1.5 1.5 0 013 0v1h1.25A2.25 2.25 0 0115 9.25v6A2.25 2.25 0 0112.75 17h-5.5A2.25 2.25 0 015 15.25v-6A2.25 2.25 0 017.25 7H8.5V6zM7.25 8.5a.75.75 0 00-.75.75v6a.75.75 0 00.75.75h5.5a.75.75 0 00.75-.75v-6a.75.75 0 00-.75-.75h-5.5z"/></svg> ${company}</span>
+            <span title="Location"><svg width="16" height="16" style="margin-right:2px;vertical-align:middle;" fill="#e91e63" viewBox="0 0 20 20"><path d="M10 2a6 6 0 016 6c0 4.418-6 10-6 10S4 12.418 4 8a6 6 0 016-6zm0 2a4 4 0 00-4 4c0 2.485 2.5 6.086 4 7.973C11.5 12.086 14 8.485 14 6a4 4 0 00-4-4zm0 2a2 2 0 110 4 2 2 0 010-4z"/></svg> ${location}</span>
+            <span class="salary" title="Salary"><svg width="16" height="16" style="margin-right:2px;vertical-align:middle;" fill="#e91e63" viewBox="0 0 20 20"><path d="M10 15a1 1 0 100-2 1 1 0 000 2zm-4-2a4 4 0 018 0H4zm4-8a4 4 0 00-4 4v1a1 1 0 001 1h6a1 1 0 001-1v-1a4 4 0 00-4-4z"/></svg> ${escapeHtml(salary)}</span>
           </div>
         `;
         jobsContainer.appendChild(card);
