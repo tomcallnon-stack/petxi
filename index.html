@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Latest Jobs in Leamington Spa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --primary-pink: #e91e63;
+      --card-bg: #fff;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.07), 0 1.5px 3px rgba(0,0,0,0.03);
+      --border-radius: 10px;
+      --max-width: 1200px;
+      --spacing: 2.2rem;
+      --font-main: 'Segoe UI', 'Roboto', Arial, sans-serif;
+      --text-gray: #222;
+      --bg-gray: #f8f9fb;
+      --border: 2px solid #e0e0e0;
+      --logo-height: 90px;
+      --carousel-btn-size: 48px;
+      --card-height: 205px; /* 1/3 bigger than original 155px */
+      --card-width: 340px;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg-gray);
+      font-family: var(--font-main);
+      color: var(--text-gray);
+      min-height: 100vh;
+      font-size: 1.1rem;
+    }
+    header {
+      background: var(--card-bg);
+      box-shadow: var(--card-shadow);
+      padding: 1.2rem 2rem 1.2rem 2rem;
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+      margin-bottom: 1.2rem;
+      max-width: var(--max-width);
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      align-items: center;
+      gap: 2.2rem;
+    }
+    .logo {
+      height: var(--logo-height);
+      width: auto;
+      display: block;
+      border-radius: 10px;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+      background: transparent;
+      margin-right: 1.2rem;
+      flex-shrink: 0;
+    }
+    .header-content {
+      flex: 1;
+      text-align: left;
+    }
+    header h1 {
+      font-size: 2.3rem;
+      margin: 0;
+      color: var(--primary-pink);
+      letter-spacing: -0.5px;
+      font-weight: 700;
+    }
+    .refresh-note {
+      color: #888;
+      font-size: 1.15rem;
+      margin-top: 0.5em;
+      margin-bottom: 0;
+      font-weight: 400;
+    }
+    #carousel-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: var(--max-width);
+      margin: 0 auto 0 auto;
+      position: relative;
+      height: calc(var(--card-height) + 2.5rem);
+    }
+    .carousel-btn {
+      background: var(--primary-pink);
+      border: none;
+      color: #fff;
+      font-size: 2.1rem;
+      width: var(--carousel-btn-size);
+      height: var(--carousel-btn-size);
+      border-radius: 50%;
+      cursor: pointer;
+      margin: 0 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.8;
+      transition: opacity 0.12s;
+      z-index: 2;
+      box-shadow: 0 2px 10px rgba(233,30,99,0.10);
+    }
+    .carousel-btn:active,
+    .carousel-btn:focus {
+      opacity: 1;
+      outline: 2px solid var(--primary-pink);
+    }
+    #jobs-carousel {
+      display: flex;
+      gap: 2.5rem;
+      flex: 1 1 0;
+      justify-content: center;
+      align-items: stretch;
+      overflow: hidden;
+      min-width: 0;
+    }
+    .job-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: var(--border);
+      box-shadow: none;
+      padding: 1.12rem 0.7rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
+      min-width: 0;
+      width: var(--card-width);
+      min-height: 0;
+      height: var(--card-height);
+      box-sizing: border-box;
+      transition: box-shadow 0.1s, transform 0.08s;
+      font-size: 1rem;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+    .job-card:hover {
+      box-shadow: 0 4px 16px rgba(233,30,99,0.09);
+      transform: translateY(-2px) scale(1.01);
+      border-color: var(--primary-pink);
+    }
+    .job-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      margin: 0 0 0.12em 0;
+      color: var(--primary-pink);
+      text-decoration: none;
+      word-break: break-word;
+      transition: color 0.1s;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      max-height: 2.3em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+    }
+    .job-title:hover, .job-title:focus {
+      color: #b0003a;
+      text-decoration: underline;
+    }
+    .job-desc {
+      margin: 0.13em 0 0.18em 0;
+      color: #555;
+      font-size: 0.84rem;
+      line-height: 1.15;
+      min-height: 1.2em;
+      max-height: 3.6em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      white-space: normal;
+      flex: 0 0 auto;
+    }
+    .job-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 1.2rem;
+      font-size: 0.97rem;
+      color: #666;
+      margin-top: 0.05em;
+      padding-top: 0.1em;
+    }
+    .job-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.3em;
+    }
+    .salary {
+      font-weight: 600;
+      color: var(--primary-pink);
+      font-size: 1rem;
+    }
+    @media (max-width: 1100px) {
+      .job-card {
+        width: 250px;
+      }
+    }
+    @media (max-width: 900px) {
+      header,
+      #carousel-container {
+        max-width: 100%;
+      }
+      .job-card {
+        width: 200px;
+      }
+      #carousel-container {
+        gap: 0.3rem;
+      }
+    }
+    @media (max-width: 700px) {
+      .job-card {
+        width: 140px;
+        padding: 0.8rem 0.6rem 0.6rem 0.7rem;
+        font-size: 0.95rem;
+      }
+      .job-title {
+        font-size: 0.99rem;
+      }
+      .job-meta {
+        font-size: 0.89rem;
+      }
+      .job-desc {
+        font-size: 0.8rem;
+      }
+      .logo {
+        height: 54px;
+      }
+      header h1 {
+        font-size: 1.18rem;
+      }
+      .refresh-note {
+        font-size: 0.97rem;
+      }
+      #carousel-container {
+        gap: 0.1rem;
+      }
+    }
+    @media (max-width: 600px) {
+      #carousel-container {
+        flex-direction: column;
+        gap: 0.2rem;
+        height: auto;
+      }
+      .carousel-btn {
+        margin: 0.6rem auto;
+        font-size: 2rem;
+        width: 38px;
+        height: 38px;
+      }
+      .job-card {
+        width: 90vw;
+        max-width: 99vw;
+      }
+      .job-title {
+        font-size: 0.97rem;
+      }
+    }
+    .loading, .error {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-size: 1.2rem;
+      color: #999;
+      margin-top: 2rem;
+    }
+    .error {
+      color: #c0392b;
+    }
+    footer {
+      text-align: center;
+      font-size: 1.05rem;
+      color: #aaa;
+      margin: 2.5rem 0 0 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img class="logo" src="PET-Xi-Logo.png" alt="PET-Xi Logo">
+    <div class="header-content">
+      <h1>Latest Jobs in Leamington Spa</h1>
+      <p class="refresh-note">This page refreshes automatically every 1 minute.</p>
+    </div>
+  </header>
+  <main>
+    <div id="carousel-container">
+      <button class="carousel-btn" id="prevBtn" aria-label="Previous Jobs">&#8592;</button>
+      <div id="jobs-carousel"></div>
+      <button class="carousel-btn" id="nextBtn" aria-label="Next Jobs">&#8594;</button>
+    </div>
+    <div class="loading" id="loading-msg">Loading jobs...</div>
+  </main>
+  <footer>
+    Powered by <a href="https://www.adzuna.co.uk/" target="_blank" rel="noopener" style="color:#e91e63;">Adzuna Jobs API</a>
+  </footer>
+  <script>
+    // --- Configuration (replace YOUR_APP_ID and YOUR_APP_KEY with your Adzuna credentials) ---
+    const API_URL =
+      "https://api.adzuna.com/v1/api/jobs/gb/search/1?app_id=977cbeaf&app_key=5b2f157f0524a824825278de0506f4c4&where=Leamington%20Spa&results_per_page=25&content-type=application/json";
+    // --- End configuration ---
+
+    const jobsCarousel = document.getElementById('jobs-carousel');
+    const loadingMsg = document.getElementById('loading-msg');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const JOBS_PER_VIEW = 3;
+    const CAROUSEL_STEP = 3;
+    const CAROUSEL_INTERVAL = 12000; // 12 seconds per slide
+    const REFRESH_INTERVAL = 60000; // 1 minute
+
+    let jobs = [];
+    let carouselIndex = 0;
+    let carouselTimer = null;
+    let refreshTimer = null;
+
+    function formatSalary(min, max, currency) {
+      if (typeof min !== "number" && typeof max !== "number") return "Salary not listed";
+      if (typeof min === "number" && typeof max === "number" && min === max) {
+        return `${currency}${min.toLocaleString()}`;
+      }
+      if (typeof min === "number" && typeof max === "number") {
+        return `${currency}${min.toLocaleString()} - ${currency}${max.toLocaleString()}`;
+      }
+      if (typeof min === "number") {
+        return `From ${currency}${min.toLocaleString()}`;
+      }
+      if (typeof max === "number") {
+        return `Up to ${currency}${max.toLocaleString()}`;
+      }
+      return "Salary not listed";
+    }
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+      };
+      return String(text).replace(/[&<>"']/g, m => map[m]);
+    }
+    function firstSentences(text, lines = 3) {
+      if (!text) return '';
+      text = text.replace(/<\/?[^>]+(>|$)/g, "");
+      const sentences = text.match(/[^.!?]+[.!?]?/g) || [];
+      let combined = sentences.slice(0, lines).join(' ').trim();
+      if (!combined && text) combined = text.substring(0, 100) + '...';
+      return escapeHtml(combined);
+    }
+
+    function renderCarousel() {
+      jobsCarousel.innerHTML = '';
+      if (!jobs.length) {
+        jobsCarousel.innerHTML = `<div class="error">No jobs found.</div>`;
+        return;
+      }
+      let totalJobs = jobs.length;
+      let start = carouselIndex;
+      let displayJobs = [];
+      for (let i = 0; i < JOBS_PER_VIEW; i++) {
+        let idx = (start + i) % totalJobs;
+        displayJobs.push(jobs[idx]);
+      }
+
+      displayJobs.forEach(job => {
+        const title = escapeHtml(job.title || "Untitled Job");
+        const company = escapeHtml(job.company?.display_name || "Unknown Company");
+        const location = escapeHtml(job.location?.display_name || "Location not listed");
+        const link = job.redirect_url ? job.redirect_url : "#";
+        const currency = (job.salary_currency || "£")
+          .replace("GBP", "£")
+          .replace("USD", "$")
+          .replace("EUR", "€");
+        const salary = formatSalary(job.salary_min, job.salary_max, currency);
+        const description = firstSentences(job.description, 3);
+
+        const card = document.createElement('div');
+        card.className = 'job-card';
+        card.innerHTML = `
+          <a href="${link}" class="job-title" target="_blank" rel="noopener">${title}</a>
+          <div class="job-meta">
+            <span title="Company"><svg width="15" height="15" style="margin-right:2px;vertical-align:middle;" fill="#e91e63" viewBox="0 0 20 20"><path d="M8.5 6a1.5 1.5 0 013 0v1h1.25A2.25 2.25 0 0115 9.25v6A2.25 2.25 0 0112.75 17h-5.5A2.25 2.25 0 015 15.25v-6A2.25 2.25 0 017.25 7H8.5V6zM7.25 8.5a.75.75 0 00-.75.75v6a.75.75 0 00.75.75h5.5a.75.75 0 00.75-.75v-6a.75.75 0 00-.75-.75h-5.5z"/></svg> ${company}</span>
+            <span title="Location"><svg width="15" height="15" style="margin-right:2px;vertical-align:middle;" fill="#e91e63" viewBox="0 0 20 20"><path d="M10 2a6 6 0 016 6c0 4.418-6 10-6 10S4 12.418 4 8a6 6 0 016-6zm0 2a4 4 0 00-4 4c0 2.485 2.5 6.086 4 7.973C11.5 12.086 14 8.485 14 6a4 4 0 00-4-4zm0 2a2 2 0 110 4 2 2 0 010-4z"/></svg> ${location}</span>
+            <span class="salary" title="Salary"><svg width="15" height="15" style="margin-right:2px;vertical-align:middle;" fill="#e91e63" viewBox="0 0 20 20"><path d="M10 15a1 1 0 100-2 1 1 0 000 2zm-4-2a4 4 0 018 0H4zm4-8a4 4 0 00-4 4v1a1 1 0 001 1h6a1 1 0 001-1v-1a4 4 0 00-4-4z"/></svg> ${escapeHtml(salary)}</span>
+          </div>
+          <div class="job-desc">${description}</div>
+        `;
+        jobsCarousel.appendChild(card);
+      });
+    }
+
+    function nextJobs() {
+      carouselIndex = (carouselIndex + CAROUSEL_STEP) % jobs.length;
+      renderCarousel();
+    }
+    function prevJobs() {
+      carouselIndex = (carouselIndex - CAROUSEL_STEP + jobs.length) % jobs.length;
+      renderCarousel();
+    }
+    function startCarousel() {
+      if (carouselTimer) clearInterval(carouselTimer);
+      carouselTimer = setInterval(nextJobs, CAROUSEL_INTERVAL);
+    }
+    function stopCarousel() {
+      if (carouselTimer) clearInterval(carouselTimer);
+    }
+    function startAutoRefresh() {
+      if (refreshTimer) clearInterval(refreshTimer);
+      refreshTimer = setInterval(fetchJobs, REFRESH_INTERVAL);
+    }
+
+    async function fetchJobs() {
+      loadingMsg && (loadingMsg.style.display = 'block');
+      try {
+        const resp = await fetch(API_URL);
+        if (!resp.ok) throw new Error("Failed to fetch jobs.");
+        const data = await resp.json();
+        jobs = (data.results || []).slice(0, 25); // up to 25 jobs for carousel loop
+        carouselIndex = 0;
+        renderCarousel();
+        startCarousel();
+      } catch (err) {
+        jobsCarousel.innerHTML = `<div class="error">Error loading jobs. Please check your API credentials or try again later.</div>`;
+      } finally {
+        loadingMsg && (loadingMsg.style.display = 'none');
+      }
+    }
+
+    prevBtn.addEventListener('click', function() {
+      prevJobs();
+      startCarousel();
+    });
+    nextBtn.addEventListener('click', function() {
+      nextJobs();
+      startCarousel();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchJobs();
+      startAutoRefresh();
+    });
+
+    // TV remote navigation support
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "ArrowLeft") {
+        prevJobs();
+        startCarousel();
+      }
+      if (e.key === "ArrowRight") {
+        nextJobs();
+        startCarousel();
+      }
+    });
+  </script>
+</body>
+</html>
